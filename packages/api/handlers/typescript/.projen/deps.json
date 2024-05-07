@@ -68,6 +68,10 @@
       "type": "build"
     },
     {
+      "name": "@aws-sdk/client-dynamodb",
+      "type": "runtime"
+    },
+    {
       "name": "myapi-typescript-runtime",
       "version": "0.0.0",
       "type": "runtime"

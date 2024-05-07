@@ -3,14 +3,18 @@ namespace com.aws
 
 use aws.protocols#restJson1
 
-/// A sample smithy api
+/// My Shopping List API
 @restJson1
 service MyApi {
     version: "1.0"
-    operations: [SayHello]
+    operations: [
+        GetShoppingLists
+        PutShoppingList
+        DeleteShoppingList
+    ]
     errors: [
-      BadRequestError
-      NotAuthorizedError
-      InternalFailureError
+        BadRequestError
+        NotAuthorizedError
+        InternalFailureError
     ]
 }

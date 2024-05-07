@@ -45,6 +45,8 @@ const api = new TypeSafeApiProject({
   },
 });
 
+api.handlers.typescript?.addDeps("@aws-sdk/client-dynamodb");
+
 const website = new CloudscapeReactTsWebsiteProject({
   parent: monorepo,
   outdir: "packages/website",

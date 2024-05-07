@@ -5,6 +5,7 @@ import { SideNavigationProps } from "@cloudscape-design/components";
  */
 export const NavItems: SideNavigationProps.Item[] = [
   { text: "Home", type: "link", href: "/" },
+  { text: "Shopping Lists", type: "link", href: "/shopping" },
   { type: "divider" },
   {
     text: "Developer Tools",

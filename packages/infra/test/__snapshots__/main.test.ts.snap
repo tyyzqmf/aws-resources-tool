@@ -281,6 +281,30 @@ exports[`Snapshot 1`] = `
       },
       "Type": "AWS::IAM::Role",
     },
+    "DatabaseShoppingListEF2F9BC7": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "shoppingListId",
+            "AttributeType": "S",
+          },
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "shoppingListId",
+            "KeyType": "HASH",
+          },
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5,
+        },
+        "TableName": "shopping_list",
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Retain",
+    },
     "MyApi2AE17C37": {
       "DependsOn": [
         "MyApiPrepareSpecCustomResource4EA2C303",
@@ -526,7 +550,110 @@ exports[`Snapshot 1`] = `
       "Type": "AWS::IAM::Role",
       "UpdateReplacePolicy": "Retain",
     },
-    "MyApiDeployment7795020Ea94e884dab9d72b935daea1a7ad2da64": {
+    "MyApiDeleteShoppingListFunctionBBC8A2F0": {
+      "DependsOn": [
+        "MyApiDeleteShoppingListFunctionServiceRoleDefaultPolicy5AD424E6",
+        "MyApiDeleteShoppingListFunctionServiceRole0FC7ED3D",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "607d2fdec0d317cf6742a5565b7bc6ee9886efccae7f2f375e0f9b23616c18c3.zip",
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "MyApiDeleteShoppingListFunctionServiceRole0FC7ED3D",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 30,
+        "TracingConfig": {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "MyApiDeleteShoppingListFunctionServiceRole0FC7ED3D": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "MyApiDeleteShoppingListFunctionServiceRoleDefaultPolicy5AD424E6": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "DatabaseShoppingListEF2F9BC7",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "MyApiDeleteShoppingListFunctionServiceRoleDefaultPolicy5AD424E6",
+        "Roles": [
+          {
+            "Ref": "MyApiDeleteShoppingListFunctionServiceRole0FC7ED3D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "MyApiDeployment7795020E606747c761d36939f293ede37604996c": {
       "DependsOn": [
         "MyApiPrepareSpecCustomResource4EA2C303",
       ],
@@ -618,7 +745,7 @@ exports[`Snapshot 1`] = `
           "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath $context.protocol" $context.status $context.responseLength $context.requestId",
         },
         "DeploymentId": {
-          "Ref": "MyApiDeployment7795020Ea94e884dab9d72b935daea1a7ad2da64",
+          "Ref": "MyApiDeployment7795020E606747c761d36939f293ede37604996c",
         },
         "MethodSettings": [
           {
@@ -634,6 +761,319 @@ exports[`Snapshot 1`] = `
         "StageName": "prod",
       },
       "Type": "AWS::ApiGateway::Stage",
+    },
+    "MyApiGetShoppingListsFunctionD603A438": {
+      "DependsOn": [
+        "MyApiGetShoppingListsFunctionServiceRoleDefaultPolicyEC7833EA",
+        "MyApiGetShoppingListsFunctionServiceRole3807BCA4",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "6bfbe0efed3b3aabe95450a3db28894b3a0f1c3005240852594a1e6a1a39d87f.zip",
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "MyApiGetShoppingListsFunctionServiceRole3807BCA4",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 30,
+        "TracingConfig": {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "MyApiGetShoppingListsFunctionServiceRole3807BCA4": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "MyApiGetShoppingListsFunctionServiceRoleDefaultPolicyEC7833EA": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "DatabaseShoppingListEF2F9BC7",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "MyApiGetShoppingListsFunctionServiceRoleDefaultPolicyEC7833EA",
+        "Roles": [
+          {
+            "Ref": "MyApiGetShoppingListsFunctionServiceRole3807BCA4",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "MyApiLambdaPermissiondeleteShoppingList407C8C53": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MyApiDeleteShoppingListFunctionBBC8A2F0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "MyApi2AE17C37",
+              },
+              "/*/DELETE/shopping-list/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "MyApiLambdaPermissiongetShoppingLists1AFC3766": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MyApiGetShoppingListsFunctionD603A438",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "MyApi2AE17C37",
+              },
+              "/*/GET/shopping-list",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "MyApiLambdaPermissionputShoppingListFD3F4CA1": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MyApiPutShoppingListFunction8D48983C",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "MyApi2AE17C37",
+              },
+              "/*/POST/shopping-list",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
     },
     "MyApiMyApiAclApiWebACL3E55A37C": {
       "Metadata": {
@@ -840,47 +1280,128 @@ exports[`Snapshot 1`] = `
           "bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "key": "850c668cc2e4e496f80228965a79a684837b61fcbee63abe92f5dd1fb54967ff.json",
+          "key": "02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json",
         },
         "integrations": {
-          "sayHello": {
+          "deleteShoppingList": {
             "integration": {
-              "requestTemplates": {
-                "application/json": "{"statusCode": 200}",
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "MyApiDeleteShoppingListFunctionBBC8A2F0",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
               },
-              "responses": {
-                "default": {
-                  "responseParameters": {
-                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
-                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
-                    "method.response.header.Access-Control-Allow-Origin": "'*'",
-                  },
-                  "responseTemplates": {
-                    "application/json": "{
-  "message": "cedo laborum articulus"
-}",
-                  },
-                  "statusCode": "200",
-                },
+            },
+          },
+          "getShoppingLists": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "MyApiGetShoppingListsFunctionD603A438",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
               },
-              "type": "MOCK",
+            },
+          },
+          "putShoppingList": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "MyApiPutShoppingListFunction8D48983C",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
             },
           },
         },
         "operationLookup": {
-          "sayHello": {
+          "deleteShoppingList": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "DELETE",
+            "path": "/shopping-list/{shoppingListId}",
+          },
+          "getShoppingLists": {
             "contentTypes": [
               "application/json",
             ],
             "method": "GET",
-            "path": "/hello",
+            "path": "/shopping-list",
+          },
+          "putShoppingList": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "POST",
+            "path": "/shopping-list",
           },
         },
         "outputSpecLocation": {
           "bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "key": "850c668cc2e4e496f80228965a79a684837b61fcbee63abe92f5dd1fb54967ff.json-prepared",
+          "key": "02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json-prepared",
         },
         "securitySchemes": {
           "aws.auth.sigv4": {
@@ -1233,7 +1754,7 @@ exports[`Snapshot 1`] = `
             {
               "applies_to": [
                 {
-                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/850c668cc2e4e496f80228965a79a684837b61fcbee63abe92f5dd1fb54967ff.json-prepared/*/g",
+                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json-prepared/*/g",
                 },
               ],
               "id": "AwsSolutions-IAM5",
@@ -1251,7 +1772,7 @@ exports[`Snapshot 1`] = `
             {
               "applies_to": [
                 {
-                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/850c668cc2e4e496f80228965a79a684837b61fcbee63abe92f5dd1fb54967ff.json-prepared/*/g",
+                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json-prepared/*/g",
                 },
               ],
               "id": "AwsPrototyping-IAMNoWildcardPermissions",
@@ -1368,7 +1889,7 @@ exports[`Snapshot 1`] = `
                         {
                           "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                         },
-                        "/850c668cc2e4e496f80228965a79a684837b61fcbee63abe92f5dd1fb54967ff.json",
+                        "/02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json",
                       ],
                     ],
                   },
@@ -1388,7 +1909,7 @@ exports[`Snapshot 1`] = `
                         {
                           "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                         },
-                        "/850c668cc2e4e496f80228965a79a684837b61fcbee63abe92f5dd1fb54967ff.json-prepared/*",
+                        "/02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json-prepared/*",
                       ],
                     ],
                   },
@@ -1397,6 +1918,109 @@ exports[`Snapshot 1`] = `
               "Version": "2012-10-17",
             },
             "PolicyName": "s3",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "MyApiPutShoppingListFunction8D48983C": {
+      "DependsOn": [
+        "MyApiPutShoppingListFunctionServiceRoleDefaultPolicy7E85A2C3",
+        "MyApiPutShoppingListFunctionServiceRoleE95450EA",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "7c075cd75574d1b24d27a853910f7f152d3d587e21711751874992ae660bd656.zip",
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "MyApiPutShoppingListFunctionServiceRoleE95450EA",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 30,
+        "TracingConfig": {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "MyApiPutShoppingListFunctionServiceRoleDefaultPolicy7E85A2C3": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "DatabaseShoppingListEF2F9BC7",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "MyApiPutShoppingListFunctionServiceRoleDefaultPolicy7E85A2C3",
+        "Roles": [
+          {
+            "Ref": "MyApiPutShoppingListFunctionServiceRoleE95450EA",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "MyApiPutShoppingListFunctionServiceRoleE95450EA": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
           },
         ],
       },
@@ -3807,7 +4431,7 @@ exports[`Snapshot 1`] = `
           },
         ],
         "SourceObjectKeys": [
-          "1acbc6e718ed319ff837b824a229f5e3f2005f6ad7369ccee83fe87586a1b606.zip",
+          "247e4d6d749178ed7799b541a20f9bbcc41661e752ee26ce253e457a3f0a2e2e.zip",
           "aaa7ce6bc2ac9936461488183e721fd147d784ca31735861ea806947f11873d7.zip",
         ],
       },

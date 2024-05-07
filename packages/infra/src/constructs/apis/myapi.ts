@@ -1,5 +1,5 @@
 import { UserIdentity } from "@aws/pdk/identity";
-import { Authorizers } from "@aws/pdk/type-safe-api";
+import { Authorizers, Integrations } from "@aws/pdk/type-safe-api";
 import { Stack } from "aws-cdk-lib";
 import { Cors } from "aws-cdk-lib/aws-apigateway";
 import {
@@ -10,7 +10,13 @@ import {
   PolicyStatement,
 } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
-import { Api, MockIntegrations } from "myapi-typescript-infra";
+import {
+  Api,
+  DeleteShoppingListFunction,
+  GetShoppingListsFunction,
+  PutShoppingListFunction,
+} from "myapi-typescript-infra";
+import { DatabaseConstruct } from "../database";
 
 /**
  * Api construct props.
@@ -20,6 +26,11 @@ export interface MyApiProps {
    * Instance of the UserIdentity.
    */
   readonly userIdentity: UserIdentity;
+
+  /**
+   * Instance of the DatabaseConstruct.
+   */
+  readonly databaseConstruct: DatabaseConstruct;
 }
 
 /**
@@ -34,13 +45,36 @@ export class MyApi extends Construct {
   constructor(scope: Construct, id: string, props?: MyApiProps) {
     super(scope, id);
 
+    const putShoppingListFunction = new PutShoppingListFunction(
+      this,
+      "PutShoppingListFunction",
+    );
+    const deleteShoppingListFunction = new DeleteShoppingListFunction(
+      this,
+      "DeleteShoppingListFunction",
+    );
+    const getShoppingListsFunction = new GetShoppingListsFunction(
+      this,
+      "GetShoppingListsFunction",
+    );
+
     this.api = new Api(this, id, {
       defaultAuthorizer: Authorizers.iam(),
       corsOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
         allowMethods: Cors.ALL_METHODS,
       },
-      integrations: MockIntegrations.mockAll(),
+      integrations: {
+        putShoppingList: {
+          integration: Integrations.lambda(putShoppingListFunction),
+        },
+        deleteShoppingList: {
+          integration: Integrations.lambda(deleteShoppingListFunction),
+        },
+        getShoppingLists: {
+          integration: Integrations.lambda(getShoppingListsFunction),
+        },
+      },
       policy: new PolicyDocument({
         statements: [
           // Here we grant any AWS credentials from the account that the prototype is deployed in to call the api.
@@ -64,6 +98,14 @@ export class MyApi extends Construct {
         ],
       }),
     });
+
+    // Grant our lambda functions scoped access to call Dynamo
+    props?.databaseConstruct.shoppingListTable.grantReadData(
+      getShoppingListsFunction,
+    );
+    [putShoppingListFunction, deleteShoppingListFunction].forEach((f) =>
+      props?.databaseConstruct.shoppingListTable.grantWriteData(f),
+    );
 
     // Grant authenticated users access to invoke the api
     props?.userIdentity.identityPool.authenticatedRole.addToPrincipalPolicy(
