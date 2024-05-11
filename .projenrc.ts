@@ -45,6 +45,11 @@ const api = new TypeSafeApiProject({
   },
 });
 
+api.handlers.typescript?.addDeps("p-limit");
+api.handlers.typescript?.addDeps("@aws-lambda-powertools/logger");
+api.handlers.typescript?.addDeps("aws-sdk-client-mock");
+api.handlers.typescript?.addDeps("aws-sdk-client-mock-jest");
+api.handlers.typescript?.addDeps("@aws-sdk/client-s3");
 api.handlers.typescript?.addDeps("@aws-sdk/client-dynamodb");
 
 const website = new CloudscapeReactTsWebsiteProject({

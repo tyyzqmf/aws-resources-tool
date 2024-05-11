@@ -152,13 +152,13 @@
       },
       "steps": [
         {
-          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@types/aws-lambda,@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,ts-jest,typescript,@aws-sdk/client-dynamodb,myapi-typescript-runtime"
+          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@types/aws-lambda,@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,ts-jest,typescript,@aws-lambda-powertools/logger,@aws-sdk/client-dynamodb,@aws-sdk/client-s3,aws-sdk-client-mock,aws-sdk-client-mock-jest,myapi-typescript-runtime,p-limit"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @types/aws-lambda @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit projen ts-jest typescript @aws-sdk/client-dynamodb myapi-typescript-runtime"
+          "exec": "pnpm update @types/aws-lambda @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit projen ts-jest typescript @aws-lambda-powertools/logger @aws-sdk/client-dynamodb @aws-sdk/client-s3 aws-sdk-client-mock aws-sdk-client-mock-jest myapi-typescript-runtime p-limit"
         },
         {
           "exec": "npx projen"

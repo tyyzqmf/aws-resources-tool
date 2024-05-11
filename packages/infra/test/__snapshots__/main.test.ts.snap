@@ -550,6 +550,98 @@ exports[`Snapshot 1`] = `
       "Type": "AWS::IAM::Role",
       "UpdateReplacePolicy": "Retain",
     },
+    "MyApiDeleteBucketsFunctionC6F43746": {
+      "DependsOn": [
+        "MyApiDeleteBucketsFunctionServiceRoleDefaultPolicy2AC7E5A9",
+        "MyApiDeleteBucketsFunctionServiceRoleB125D930",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "1c278e2526b029e8dbfdbbc7b01d2503df241b12b2fbcab2f39aab32bafb265e.zip",
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "MyApiDeleteBucketsFunctionServiceRoleB125D930",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 30,
+        "TracingConfig": {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "MyApiDeleteBucketsFunctionServiceRoleB125D930": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "MyApiDeleteBucketsFunctionServiceRoleDefaultPolicy2AC7E5A9": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "s3:ListObjectsV2",
+                "s3:ListObjectVersions",
+                "s3:DeleteObject",
+                "s3:DeleteBucket",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "MyApiDeleteBucketsFunctionServiceRoleDefaultPolicy2AC7E5A9",
+        "Roles": [
+          {
+            "Ref": "MyApiDeleteBucketsFunctionServiceRoleB125D930",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "MyApiDeleteShoppingListFunctionBBC8A2F0": {
       "DependsOn": [
         "MyApiDeleteShoppingListFunctionServiceRoleDefaultPolicy5AD424E6",
@@ -560,7 +652,7 @@ exports[`Snapshot 1`] = `
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "607d2fdec0d317cf6742a5565b7bc6ee9886efccae7f2f375e0f9b23616c18c3.zip",
+          "S3Key": "1869c4a85d537dbd1eb5e777a8ff0af5c388bf07c64051f0639c96bd1df69963.zip",
         },
         "Handler": "index.handler",
         "Role": {
@@ -653,7 +745,7 @@ exports[`Snapshot 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
-    "MyApiDeployment7795020E606747c761d36939f293ede37604996c": {
+    "MyApiDeployment7795020E0c1e9077981c421931824037f99bba37": {
       "DependsOn": [
         "MyApiPrepareSpecCustomResource4EA2C303",
       ],
@@ -745,7 +837,7 @@ exports[`Snapshot 1`] = `
           "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath $context.protocol" $context.status $context.responseLength $context.requestId",
         },
         "DeploymentId": {
-          "Ref": "MyApiDeployment7795020E606747c761d36939f293ede37604996c",
+          "Ref": "MyApiDeployment7795020E0c1e9077981c421931824037f99bba37",
         },
         "MethodSettings": [
           {
@@ -762,6 +854,96 @@ exports[`Snapshot 1`] = `
       },
       "Type": "AWS::ApiGateway::Stage",
     },
+    "MyApiGetBucketListFunction4213557B": {
+      "DependsOn": [
+        "MyApiGetBucketListFunctionServiceRoleDefaultPolicy0249251A",
+        "MyApiGetBucketListFunctionServiceRoleAF336761",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "8d3bd7dbc31b205141c8279ea7d6fbf9f4dba37e581da34cdf85342200abd6a0.zip",
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "MyApiGetBucketListFunctionServiceRoleAF336761",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 30,
+        "TracingConfig": {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "MyApiGetBucketListFunctionServiceRoleAF336761": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "MyApiGetBucketListFunctionServiceRoleDefaultPolicy0249251A": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "s3:ListAllMyBuckets",
+                "s3:GetBucketLocation",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "MyApiGetBucketListFunctionServiceRoleDefaultPolicy0249251A",
+        "Roles": [
+          {
+            "Ref": "MyApiGetBucketListFunctionServiceRoleAF336761",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "MyApiGetShoppingListsFunctionD603A438": {
       "DependsOn": [
         "MyApiGetShoppingListsFunctionServiceRoleDefaultPolicyEC7833EA",
@@ -772,7 +954,7 @@ exports[`Snapshot 1`] = `
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "6bfbe0efed3b3aabe95450a3db28894b3a0f1c3005240852594a1e6a1a39d87f.zip",
+          "S3Key": "0cd118a771965db6857e495ee0de2c287190350c6999dd9143013dc43d28e3bc.zip",
         },
         "Handler": "index.handler",
         "Role": {
@@ -868,6 +1050,75 @@ exports[`Snapshot 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
+    "MyApiLambdaPermissiondeleteBucketsD68AACB1": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MyApiDeleteBucketsFunctionC6F43746",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "MyApi2AE17C37",
+              },
+              "/*/POST/bucket",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
     "MyApiLambdaPermissiondeleteShoppingList407C8C53": {
       "Metadata": {
         "cdk_nag": {
@@ -931,6 +1182,75 @@ exports[`Snapshot 1`] = `
                 "Ref": "MyApi2AE17C37",
               },
               "/*/DELETE/shopping-list/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "MyApiLambdaPermissiongetBucketList5E95D0B7": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MyApiGetBucketListFunction4213557B",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "MyApi2AE17C37",
+              },
+              "/*/GET/buckets",
             ],
           ],
         },
@@ -1280,9 +1600,39 @@ exports[`Snapshot 1`] = `
           "bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "key": "02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json",
+          "key": "fc91c62d371dad7abd233b83f9c14cb12a421742bca0f9785e19bac553067c08.json",
         },
         "integrations": {
+          "deleteBuckets": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "MyApiDeleteBucketsFunctionC6F43746",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
           "deleteShoppingList": {
             "integration": {
               "httpMethod": "POST",
@@ -1304,6 +1654,36 @@ exports[`Snapshot 1`] = `
                     {
                       "Fn::GetAtt": [
                         "MyApiDeleteShoppingListFunctionBBC8A2F0",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "getBucketList": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "MyApiGetBucketListFunction4213557B",
                         "Arn",
                       ],
                     },
@@ -1375,12 +1755,26 @@ exports[`Snapshot 1`] = `
           },
         },
         "operationLookup": {
+          "deleteBuckets": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "POST",
+            "path": "/bucket",
+          },
           "deleteShoppingList": {
             "contentTypes": [
               "application/json",
             ],
             "method": "DELETE",
             "path": "/shopping-list/{shoppingListId}",
+          },
+          "getBucketList": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/buckets",
           },
           "getShoppingLists": {
             "contentTypes": [
@@ -1401,7 +1795,7 @@ exports[`Snapshot 1`] = `
           "bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "key": "02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json-prepared",
+          "key": "fc91c62d371dad7abd233b83f9c14cb12a421742bca0f9785e19bac553067c08.json-prepared",
         },
         "securitySchemes": {
           "aws.auth.sigv4": {
@@ -1754,7 +2148,7 @@ exports[`Snapshot 1`] = `
             {
               "applies_to": [
                 {
-                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json-prepared/*/g",
+                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/fc91c62d371dad7abd233b83f9c14cb12a421742bca0f9785e19bac553067c08.json-prepared/*/g",
                 },
               ],
               "id": "AwsSolutions-IAM5",
@@ -1772,7 +2166,7 @@ exports[`Snapshot 1`] = `
             {
               "applies_to": [
                 {
-                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json-prepared/*/g",
+                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/fc91c62d371dad7abd233b83f9c14cb12a421742bca0f9785e19bac553067c08.json-prepared/*/g",
                 },
               ],
               "id": "AwsPrototyping-IAMNoWildcardPermissions",
@@ -1889,7 +2283,7 @@ exports[`Snapshot 1`] = `
                         {
                           "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                         },
-                        "/02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json",
+                        "/fc91c62d371dad7abd233b83f9c14cb12a421742bca0f9785e19bac553067c08.json",
                       ],
                     ],
                   },
@@ -1909,7 +2303,7 @@ exports[`Snapshot 1`] = `
                         {
                           "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                         },
-                        "/02bdfc47271e499152f844b7f4cfdd5a06e50dfa8591c8a69f1d56e86d1645c2.json-prepared/*",
+                        "/fc91c62d371dad7abd233b83f9c14cb12a421742bca0f9785e19bac553067c08.json-prepared/*",
                       ],
                     ],
                   },
@@ -1933,7 +2327,7 @@ exports[`Snapshot 1`] = `
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "7c075cd75574d1b24d27a853910f7f152d3d587e21711751874992ae660bd656.zip",
+          "S3Key": "7e8859c55cd0304344a5f29aeb8d230e8c0f68411d30a7062c07031a9bf12814.zip",
         },
         "Handler": "index.handler",
         "Role": {
@@ -4431,7 +4825,7 @@ exports[`Snapshot 1`] = `
           },
         ],
         "SourceObjectKeys": [
-          "247e4d6d749178ed7799b541a20f9bbcc41661e752ee26ce253e457a3f0a2e2e.zip",
+          "0b759825004e36e2d18b33e78b47d86a8b042714e2ebd3d1a39cb48318c2fe47.zip",
           "aaa7ce6bc2ac9936461488183e721fd147d784ca31735861ea806947f11873d7.zip",
         ],
       },

@@ -68,12 +68,32 @@
       "type": "build"
     },
     {
+      "name": "@aws-lambda-powertools/logger",
+      "type": "runtime"
+    },
+    {
       "name": "@aws-sdk/client-dynamodb",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-sdk/client-s3",
+      "type": "runtime"
+    },
+    {
+      "name": "aws-sdk-client-mock",
+      "type": "runtime"
+    },
+    {
+      "name": "aws-sdk-client-mock-jest",
       "type": "runtime"
     },
     {
       "name": "myapi-typescript-runtime",
       "version": "0.0.0",
+      "type": "runtime"
+    },
+    {
+      "name": "p-limit",
       "type": "runtime"
     }
   ],

@@ -8,11 +8,15 @@ import {
   Effect,
   PolicyDocument,
   PolicyStatement,
+  Role,
 } from "aws-cdk-lib/aws-iam";
+import { Function } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
 import {
   Api,
+  DeleteBucketsFunction,
   DeleteShoppingListFunction,
+  GetBucketListFunction,
   GetShoppingListsFunction,
   PutShoppingListFunction,
 } from "myapi-typescript-infra";
@@ -57,6 +61,14 @@ export class MyApi extends Construct {
       this,
       "GetShoppingListsFunction",
     );
+    const getBucketListFunction = new GetBucketListFunction(
+      this,
+      "GetBucketListFunction",
+    );
+    const deleteBucketsFunction = new DeleteBucketsFunction(
+      this,
+      "DeleteBucketsFunction",
+    );
 
     this.api = new Api(this, id, {
       defaultAuthorizer: Authorizers.iam(),
@@ -73,6 +85,12 @@ export class MyApi extends Construct {
         },
         getShoppingLists: {
           integration: Integrations.lambda(getShoppingListsFunction),
+        },
+        getBucketList: {
+          integration: Integrations.lambda(getBucketListFunction),
+        },
+        deleteBuckets: {
+          integration: Integrations.lambda(deleteBucketsFunction),
         },
       },
       policy: new PolicyDocument({
@@ -115,5 +133,35 @@ export class MyApi extends Construct {
         resources: [this.api.api.arnForExecuteApi("*", "/*", "*")],
       }),
     );
+
+    // Grant the lambda functions access to call S3
+    this._grantS3BucketAccessToGetBucketsFunction(getBucketListFunction);
+    this._grantS3BucketAccessToDeleteBucketsFunction(deleteBucketsFunction);
+  }
+
+  private _grantS3BucketAccessToGetBucketsFunction(fn: Function) {
+    if (fn.role) {
+      const ps = new PolicyStatement({
+        actions: ["s3:ListAllMyBuckets", "s3:GetBucketLocation"],
+        resources: ["*"],
+      });
+      (fn.role as Role).addToPolicy(ps);
+    }
+  }
+
+  private _grantS3BucketAccessToDeleteBucketsFunction(fn: Function) {
+    if (fn.role) {
+      const ps = new PolicyStatement({
+        actions: [
+          "s3:ListBucket",
+          "s3:ListBucketVersions",
+          "s3:DeleteObject",
+          "s3:DeleteBucket",
+          "s3:DeleteObjectVersion",
+        ],
+        resources: ["*"],
+      });
+      (fn.role as Role).addToPolicy(ps);
+    }
   }
 }

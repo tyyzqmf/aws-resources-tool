@@ -3,7 +3,7 @@ namespace com.aws
 
 use aws.protocols#restJson1
 
-/// My Shopping List API
+/// My API
 @restJson1
 service MyApi {
     version: "1.0"
@@ -11,6 +11,8 @@ service MyApi {
         GetShoppingLists
         PutShoppingList
         DeleteShoppingList
+        GetBucketList
+        DeleteBuckets
     ]
     errors: [
         BadRequestError

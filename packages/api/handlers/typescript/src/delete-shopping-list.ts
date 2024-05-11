@@ -1,4 +1,4 @@
-import { DeleteItemCommand, DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DeleteItemCommand } from '@aws-sdk/client-dynamodb';
 import {
   deleteShoppingListHandler,
   DeleteShoppingListChainedHandlerFunction,

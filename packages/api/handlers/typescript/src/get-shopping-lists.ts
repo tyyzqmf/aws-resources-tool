@@ -1,4 +1,4 @@
-import { DynamoDBClient, QueryCommand, QueryCommandInput, ScanCommand, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { QueryCommand, QueryCommandInput, ScanCommand, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 import {
   getShoppingListsHandler,
   GetShoppingListsChainedHandlerFunction,
